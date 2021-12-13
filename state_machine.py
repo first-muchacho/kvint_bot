@@ -1,7 +1,7 @@
 from transitions import Machine
 
 
-class CheeseBot(object):
+class CheeseBot(object):  # класс стейт-машины, где хранятся состояния и переходы
     states = ['chilling', 'size_choose', 'payment_method', 'confirmation']
 
     def __init__(self):

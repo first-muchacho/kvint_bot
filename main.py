@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 from telegram import (Update, KeyboardButton, ReplyKeyboardMarkup)
 from telegram.ext import (Updater, CommandHandler, Filters, MessageHandler, CallbackContext)
 
-load_dotenv()
+load_dotenv()  # грузим и подключаем токен
 
 TELEGRAM_TOKEN = os.getenv('TOKEN')
 
-logging.basicConfig(
+logging.basicConfig(  # создаем логер
     format='%(asctime)s - %(name)s - %(levelname)n - %(message)%', level=logging.INFO
 )
 
@@ -20,7 +20,7 @@ bot = state_machine.CheeseBot()
 
 
 def start(update: Update, context: CallbackContext):
-    bot.start()
+    bot.start()  # функция запуска бота
     message = 'Добро пожаловать.\nКакую вы хотите пиццу? Большую или маленькую?\n' \
               'Если Вам нужна помощь введите команду /help.'
     update.message.reply_text(message)
@@ -28,14 +28,14 @@ def start(update: Update, context: CallbackContext):
 
 
 def stop(update: Update, context: CallbackContext):
-    bot.stop()
+    bot.stop()  # функция остановки работы бота и возвращение в исходное состояние
     message = 'Для заказа введите /start.'
     update.message.reply_text(message)
     return
 
 
 def help(update: Update, context: CallbackContext):
-    bot.help()
+    bot.help()  # функция вызова подсказки
     message = 'Для начала формирования заказа введите /start, чтобы отменить заказ /stop.\n' \
               'Пока у нас есть только два варината пиццы: большая и маленькая.\n' \
               'А оплату мы принимаем либо наличкой, либо картой.'
@@ -43,7 +43,7 @@ def help(update: Update, context: CallbackContext):
     return
 
 
-def run(update: Update, context: CallbackContext):
+def run(update: Update, context: CallbackContext):  # основная функция, которая изменяет состояние стейт-машины
     text = update.message.text.lower()
     sizes = [
         'большую', 'маленькую', 'большая', 'маленькая'
@@ -73,8 +73,8 @@ def run(update: Update, context: CallbackContext):
     elif bot.state == 'confirmation':
         if text == 'да':
             bot.done()
-            contact_button = KeyboardButton('Номер', request_contact=True)
-            location_button = KeyboardButton('Адрес', request_location=True)
+            contact_button = KeyboardButton('Номер', request_contact=True)  # кнопка-запрос номера телефона
+            location_button = KeyboardButton('Адрес', request_location=True)  # кнопка-запрос номера геолокации
             my_keyboard = ReplyKeyboardMarkup([[contact_button, location_button]], resize_keyboard=True)
             message = 'Спасибо за заказ.\n' \
                       'Он отправлен на кухню, но для доставки нам нужны Ваши контакты.\n' \
@@ -87,7 +87,7 @@ def run(update: Update, context: CallbackContext):
             update.message.reply_text(message)
 
 
-def main():
+def main():  # запускаем бота
     updater = Updater(TELEGRAM_TOKEN)
 
     dispatcher = updater.dispatcher
