@@ -3,7 +3,7 @@ import logging
 import state_machine
 
 from dotenv import load_dotenv
-from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
+from telegram import (Update, KeyboardButton, ReplyKeyboardMarkup)
 from telegram.ext import (Updater, CommandHandler, Filters, MessageHandler, CallbackContext)
 
 load_dotenv()
